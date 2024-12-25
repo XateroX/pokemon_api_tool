@@ -35,6 +35,7 @@ class PokeWindow extends StatefulWidget {
 
 class _PokeWindowState extends State<PokeWindow> {
   final PokemontcgioApi api = PokemontcgioApi();
+  final TextEditingController _textController = TextEditingController();
 
   Future<Tuple2<Object, List<PokemonTCGIOResponseCardStructure>?>>? _futureCardSearchResults;
 
@@ -74,6 +75,7 @@ class _PokeWindowState extends State<PokeWindow> {
                               updateCardQueryAndSearch(value);
                             });
                           },
+                          textController: _textController,
                         ),
                       ),
                     ],
@@ -93,40 +95,47 @@ class _PokeWindowState extends State<PokeWindow> {
                 ],
               )
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children:
                 [ 
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width /2,
-                        height: DefaultTextStyle.of(context).style.fontSize! * 5,
-                        child: PokeTitle()
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width /2,
-                        height: DefaultTextStyle.of(context).style.fontSize! * 3,
-                        child:  PokeTextField(
-                          setFutureCardCallback: (String value){
-                            setState((){
-                              updateCardQueryAndSearch(value);
-                            });
-                          },
+                  Expanded(
+                    flex:1,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          height: DefaultTextStyle.of(context).style.fontSize! * 5,
+                          child: PokeTitle()
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width /1.5,
+                          height: DefaultTextStyle.of(context).style.fontSize! * 3,
+                          child:  PokeTextField(
+                            setFutureCardCallback: (String value){
+                              setState((){
+                                updateCardQueryAndSearch(value);
+                              });
+                            },
+                            textController: _textController,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                  AnimatedContainer(
-                    curve: Curves.easeIn,
-                    duration: const Duration(milliseconds: 500),
-                    width: _futureCardSearchResults==null ? 0 : constraints.maxWidth,
-                    height: _futureCardSearchResults==null ? 0 : constraints.maxHeight / 1.25,
-                    child: Center(
-                      child: _futureCardSearchResults==null ? Container()
-                      : PokeWindowCardViewer(
-                        futureResults:_futureCardSearchResults!
-                      )
+                  Expanded(
+                    flex:5,
+                    child: AnimatedContainer(
+                      curve: Curves.easeIn,
+                      duration: const Duration(milliseconds: 500),
+                      width: _futureCardSearchResults==null ? 0 : constraints.maxWidth,
+                      height: _futureCardSearchResults==null ? 0 : constraints.maxHeight / 1.25,
+                      child: Center(
+                        child: _futureCardSearchResults==null ? Container()
+                        : PokeWindowCardViewer(
+                          futureResults:_futureCardSearchResults!
+                        )
+                      ),
                     ),
                   ),
                 ],

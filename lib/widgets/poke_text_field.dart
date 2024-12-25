@@ -4,13 +4,14 @@ import 'package:pokemon_api_tool/api/pokemontcgio_response_cardstructure.dart';
 import 'package:tuple/tuple.dart';
 
 class PokeTextField extends StatelessWidget {
-  final TextEditingController _textController = TextEditingController();
   final FocusNode _textFocusNode = FocusNode();
   final Function(String) setFutureCardCallback;
+  final TextEditingController textController;
 
   PokeTextField({
     Key? key,
     required this.setFutureCardCallback,
+    required this.textController,
   }) : super(key: key);
 
   @override
@@ -27,7 +28,7 @@ class PokeTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: TextField(
-        controller: _textController,
+        controller: textController,
         focusNode: _textFocusNode,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
