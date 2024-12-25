@@ -27,18 +27,18 @@ class PokemonCard extends StatelessWidget {
             alignment: Alignment.center,
             children: 
             [ 
-            SizedBox(
-              width: 200,
-              height: 200,
-              child: Expanded(
-                child: Container(
-                  color: Colors.grey[300],
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                )
-              ),
-            ),
+            // SizedBox(
+            //   width: 200,
+            //   height: 200,
+            //   child: Expanded(
+            //     child: Container(
+            //       color: Colors.grey[300],
+            //       child: Center(
+            //         child: CircularProgressIndicator(),
+            //       ),
+            //     )
+            //   ),
+            // ),
             child 
           ]);
         } else {

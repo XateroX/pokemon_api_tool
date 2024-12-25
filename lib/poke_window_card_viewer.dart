@@ -42,9 +42,7 @@ class PokeWindowCardViewer extends StatelessWidget{
                 child: PageView.builder(
                   itemCount: snapshot.data!.item2!.length,
                   itemBuilder: (context, index) {
-                    return SizedBox.shrink(
-                      child:PokemonCard(pokemonCard: snapshot.data!.item2![index])
-                    );
+                    return PokemonCard(pokemonCard: snapshot.data!.item2![index]);
                   },
                 ),
               ),
