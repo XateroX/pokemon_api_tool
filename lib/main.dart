@@ -49,6 +49,20 @@ class _PokeWindowState extends State<PokeWindow> {
 
   @override
   Widget build(BuildContext context) {
+    FocusNode focusNode = FocusNode();
+
+    Widget textField = PokeTextField(
+      setFutureCardCallback: (String value){
+        setState((){
+          updateCardQueryAndSearch(value);
+        });
+      },
+      textController: _textController,
+      // textFocusNode: focusNode,
+    );
+
+    Widget title = PokeTitle();
+
     return Center(
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -64,19 +78,12 @@ class _PokeWindowState extends State<PokeWindow> {
                       SizedBox(
                         width: _futureCardSearchResults==null ? MediaQuery.of(context).size.width /3 : MediaQuery.of(context).size.width /3,
                         height: DefaultTextStyle.of(context).style.fontSize! * 5,
-                        child: PokeTitle()
+                        child: title
                       ),
                       SizedBox(
                         width: _futureCardSearchResults==null ? MediaQuery.of(context).size.width /3 : MediaQuery.of(context).size.width /5,
                         height: DefaultTextStyle.of(context).style.fontSize! * 3,
-                        child:  PokeTextField(
-                          setFutureCardCallback: (String value){
-                            setState((){
-                              updateCardQueryAndSearch(value);
-                            });
-                          },
-                          textController: _textController,
-                        ),
+                        child: textField
                       ),
                     ],
                   ),
@@ -101,42 +108,33 @@ class _PokeWindowState extends State<PokeWindow> {
                   Expanded(
                     flex:1,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           height: DefaultTextStyle.of(context).style.fontSize! * 5,
-                          child: PokeTitle()
+                          child: title
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width /1.5,
                           height: DefaultTextStyle.of(context).style.fontSize! * 3,
-                          child:  PokeTextField(
-                            setFutureCardCallback: (String value){
-                              setState((){
-                                updateCardQueryAndSearch(value);
-                              });
-                            },
-                            textController: _textController,
-                          ),
+                          child: textField
                         ),
                       ],
                     ),
                   ),
-                  Expanded(
-                    flex:5,
-                    child: AnimatedContainer(
+                  AnimatedContainer(
                       curve: Curves.easeIn,
                       duration: const Duration(milliseconds: 500),
                       width: _futureCardSearchResults==null ? 0 : constraints.maxWidth,
                       height: _futureCardSearchResults==null ? 0 : constraints.maxHeight / 1.25,
                       child: Center(
-                        child: _futureCardSearchResults==null ? Container()
-                        : PokeWindowCardViewer(
-                          futureResults:_futureCardSearchResults!
-                        )
-                      ),
-                    ),
+                      child: _futureCardSearchResults==null ? Container()
+                      : PokeWindowCardViewer(
+                        futureResults:_futureCardSearchResults!
+                      )
+                                            ),
                   ),
                 ],
               );

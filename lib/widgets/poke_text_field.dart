@@ -1,41 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_api_tool/api/pokemontcgio_api.dart';
-import 'package:pokemon_api_tool/api/pokemontcgio_response_cardstructure.dart';
-import 'package:tuple/tuple.dart';
 
-class PokeTextField extends StatelessWidget {
-  // final FocusNode _textFocusNode = FocusNode();
+class PokeTextField extends StatefulWidget {
   final Function(String) setFutureCardCallback;
   final TextEditingController textController;
+  // final FocusNode textFocusNode;
 
-  PokeTextField({
+  const PokeTextField({
     Key? key,
     required this.setFutureCardCallback,
     required this.textController,
+    // required this.textFocusNode,
   }) : super(key: key);
 
   @override
+  _PokeTextFieldState createState() => _PokeTextFieldState();
+}
+
+class _PokeTextFieldState extends State<PokeTextField> {
+  
+
+  // @override
   // void initState() {
-  //   _textFocusNode.requestFocus();
+  //   super.initState();
+  //   widget.textFocusNode.requestFocus(); // Request focus when the widget is initialized
   // }
 
-  @override
+  // @override
   // void dispose() {
-  //   _textFocusNode.dispose();
+  //   widget.textFocusNode.dispose(); // Clean up the FocusNode when the widget is disposed
+  //   super.dispose();
   // }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: TextField(
-        controller: textController,
-        // focusNode: _textFocusNode,
+        controller: widget.textController,
+        // focusNode: widget.textFocusNode,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
           hintText: 'Enter a Pokemon name or number (XXX/YYY)',
         ),
         onSubmitted: (value) {
-          setFutureCardCallback(value);
+          widget.setFutureCardCallback(value);
         },
       ),
     );
