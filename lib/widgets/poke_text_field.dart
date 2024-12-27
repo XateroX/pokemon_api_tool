@@ -2,14 +2,10 @@ import 'package:flutter/material.dart';
 
 class PokeTextField extends StatefulWidget {
   final Function(String) setFutureCardCallback;
-  final TextEditingController textController;
-  // final FocusNode textFocusNode;
 
   const PokeTextField({
     Key? key,
     required this.setFutureCardCallback,
-    required this.textController,
-    // required this.textFocusNode,
   }) : super(key: key);
 
   @override
@@ -17,34 +13,36 @@ class PokeTextField extends StatefulWidget {
 }
 
 class _PokeTextFieldState extends State<PokeTextField> {
-  
+  final TextEditingController _textController = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   widget.textFocusNode.requestFocus(); // Request focus when the widget is initialized
-  // }
+  @override
+  void initState() {
+    super.initState();
+    _focusNode.requestFocus(); // Request focus when the widget is initialized
+  }
 
-  // @override
-  // void dispose() {
-  //   widget.textFocusNode.dispose(); // Clean up the FocusNode when the widget is disposed
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _textController.dispose();
+    _focusNode.dispose(); // Clean up the FocusNode when the widget is disposed
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: TextField(
-        controller: widget.textController,
-        // focusNode: widget.textFocusNode,
+        controller: _textController,
+        focusNode: _focusNode,
         decoration: InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Enter a Pokemon name or number (XXX/YYY)',
+          hintText: 'Enter a number (XXX/YYY)',
         ),
-        onSubmitted: (value) {
-          widget.setFutureCardCallback(value);
+        onEditingComplete: (){
+          widget.setFutureCardCallback(_textController.text);
         },
-      ),
+      )
     );
   }
 }
