@@ -37,107 +37,113 @@ class PokeWindow extends StatefulWidget {
 
 class _PokeWindowState extends State<PokeWindow> {
   final PokemontcgioApi api = PokemontcgioApi();
-
   Future<Tuple2<Object, List<PokemonTCGIOResponseCardStructure>?>>? _futureCardSearchResults;
+  TextEditingController textController = TextEditingController();
+  String? textControllerValueSaved;
 
   void updateCardQueryAndSearch(String value){
     if (value == ""){
-      _futureCardSearchResults = null;
+      setState((){
+        _futureCardSearchResults = null;
+      });
     } else {
-      _futureCardSearchResults = api.getCardByNumberString(value);
+      setState((){
+        _futureCardSearchResults = api.getCardByNumberString(value);
+      });
     }
+  }
+
+  void setValueOfMyState(String value){
+    setState((){
+      textControllerValueSaved = value;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    
     Widget textField = PokeTextField(
-      setFutureCardCallback: (String value){
-        setState((){
-          updateCardQueryAndSearch(value);
-        });
-      },
+      setFutureCardCallback: updateCardQueryAndSearch,
+      textController: textController,
     );
     Widget title = PokeTitle();
 
     final isWide = MediaQuery.of(context).size.width > MediaQuery.of(context).size.height;
-    return Center(
-      child: isWide
-      ? Row(
+    return Scaffold(
+      body: Center(
+        child: isWide
+        ? Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children:
+            [ 
+              Container(
+                width: _futureCardSearchResults==null 
+                ? MediaQuery.of(context).size.width / 1.5
+                : MediaQuery.of(context).size.width / 2.5,
+                height: MediaQuery.of(context).size.height / 3,
+                child: Container(
+                  width: MediaQuery.of(context).size.width / 2, // Half the width
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      title,
+                      textField,
+                      // Text("W:${MediaQuery.of(context).size.width} H:${MediaQuery.of(context).size.height}")
+                    ],
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                width: _futureCardSearchResults==null ? 0 : 1.5*MediaQuery.of(context).size.width / 2.5,
+                height: 4*MediaQuery.of(context).size.height / 5,
+                curve: Curves.easeIn,
+                duration: const Duration(milliseconds: 200),
+                child: Center(
+                  child: _futureCardSearchResults==null ? Container()
+                  : PokeWindowCardViewer(
+                    futureResults:_futureCardSearchResults!
+                    )
+                ),
+              ),
+            ],
+          )
+        : Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children:
           [ 
-            Expanded(
-              flex:1,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width,
-                    height: DefaultTextStyle.of(context).style.fontSize! * 5,
-                    child: title
-                  ),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width /1.5,
-                    height: DefaultTextStyle.of(context).style.fontSize! * 3,
-                    child: textField
-                  ),
-                  Text("W:${MediaQuery.of(context).size.width} H:${MediaQuery.of(context).size.height}")
-                ],
+            Container(
+              width: MediaQuery.of(context).size.width / 1.5,
+              height: _futureCardSearchResults==null 
+              ? MediaQuery.of(context).size.height / 3 
+              : MediaQuery.of(context).size.height / 5,
+              child: Container(
+                width: MediaQuery.of(context).size.width / 2, // Half the width
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    title,
+                    textField,
+                    // Text("W:${MediaQuery.of(context).size.width} H:${MediaQuery.of(context).size.height}")
+                  ],
+                ),
               ),
             ),
             AnimatedContainer(
+              width: MediaQuery.of(context).size.width / 1.2,
+              height: _futureCardSearchResults==null ? 0 : 2 * MediaQuery.of(context).size.height / 3,
               curve: Curves.easeIn,
               duration: const Duration(milliseconds: 500),
-              width: _futureCardSearchResults==null ? 0 : MediaQuery.of(context).size.width / 1.5,
-              height: _futureCardSearchResults==null ? 0 : MediaQuery.of(context).size.height / 2,
               child: Center(
                 child: _futureCardSearchResults==null ? Container()
                 : PokeWindowCardViewer(
                   futureResults:_futureCardSearchResults!
-                )
+                  )
               ),
             ),
           ],
         )
-      : Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children:
-        [ 
-          Expanded(
-            flex:1,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: DefaultTextStyle.of(context).style.fontSize! * 5,
-                  child: title
-                ),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width /1.5,
-                  height: DefaultTextStyle.of(context).style.fontSize! * 3,
-                  child: textField
-                ),
-                Text("W:${MediaQuery.of(context).size.width} H:${MediaQuery.of(context).size.height}")
-              ],
-            ),
-          ),
-          AnimatedContainer(
-              curve: Curves.easeIn,
-              duration: const Duration(milliseconds: 500),
-              width: _futureCardSearchResults==null ? 0 : MediaQuery.of(context).size.width,
-              height: _futureCardSearchResults==null ? 0 : MediaQuery.of(context).size.height / 1.25,
-              child: Center(
-              child: _futureCardSearchResults==null ? Container()
-              : PokeWindowCardViewer(
-                futureResults:_futureCardSearchResults!
-              )
-            ),
-          ),
-        ],
-      )
+      ),
     );
   }
 }
