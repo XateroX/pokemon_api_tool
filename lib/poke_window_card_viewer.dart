@@ -44,6 +44,7 @@ class PokeWindowCardViewer extends StatelessWidget{
                   itemBuilder: (context, index) {
                     return PokemonCard(pokemonCard: snapshot.data!.item2![index]);
                   },
+                  onPageChanged: (value) => print("Page changed to $value"),
                 ),
               ),
             );

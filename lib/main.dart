@@ -138,7 +138,7 @@ class _PokeWindowState extends State<PokeWindow> {
                 child: _futureCardSearchResults==null ? Container()
                 : PokeWindowCardViewer(
                   futureResults:_futureCardSearchResults!
-                  )
+                )
               ),
             ),
           ],

@@ -91,7 +91,7 @@ class PokemonCard extends StatelessWidget {
                 "${e.key}: \$${e.value}",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 15
+                  fontSize: MediaQuery.of(context).size.width / 50
                 ),
               ))
             ],

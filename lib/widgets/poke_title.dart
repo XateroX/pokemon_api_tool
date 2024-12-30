@@ -17,7 +17,7 @@ class PokeTitle extends StatelessWidget {
                 text: 'PokeWindow',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 50,
+                  fontSize: MediaQuery.of(context).size.width / 20,
                   color: Colors.blue
                 )
               )
